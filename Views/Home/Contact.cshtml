@@ -1,0 +1,69 @@
+﻿@{
+    ViewBag.Title = "Contact";
+}
+<h2>@ViewBag.Title.</h2>
+<h3>@ViewBag.Message</h3>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-8">
+                <form>
+                    <div class="form-row">
+                        <div class="col form-group">
+                            <input type="text" class="form-control">
+                            <libellé>PR&EacuteNOM</libellé>
+                        </div>
+                        <div class="col form-group">
+                            <input type="text" class="form-control">
+                            <libellé>NOM</libellé>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col form-group">
+                            <libellé>E-MAIL</libellé>
+                            <input type="text" class="form-control">
+                        </div>
+                        <div class="col form-group">
+                            <libellé>TELEPHONE</libellé>
+                            <input type="text" class="form-control">
+                        </div>
+
+                        <div>
+                            <select id="ddl"
+                                    required="required"
+                                    multiple="multiple"
+                                    hidden=""
+                                    tabindex="-1"
+                                    data-choice="active">
+                                <option value="Ménage, repassage"></option>
+                                <option value="Aide administrative"></option>
+                                <option value="Mise à disposition avec un artisan"></option>
+                            </select>
+                            <div class="choices_list choiceslist--multiple"></div>
+                            <input type="text" 
+                                   class="choicesinput choices_input--cloned" 
+                                   autocomplete="off"
+                                   autocapitalize="off"
+                                   spellcheck="false" 
+                                   role="textbox"
+                                   aria-autocomplete="list"
+                                   aria-label="Ménage, repassage"
+                                   placeholder="Ménage, repassage" 
+                                   style="min-width: 18ch; 
+                                   width: 1ch;">
+                        </div>
+
+                    </div>
+                    <div class="col-sm-12 col-md-4 form-group">
+                        <libellé>MESSAGE</libellé>
+                        <textarea id="textarea" data-text-limit="750" maxlength="750" required="" style="margin-top: 0px; margin-bottom: 0px; height: 223px;" aria-invalid="true"></textarea>
+                        <libellé> 0 sur 750 caractères maximum.</libellé>
+                    </div>
+                    <button type="submit" name="Envoyer" class="" id="submit" aria-live="assertive" data-alt-text="Envoi..." data-submit-text="Envoyer">Envoyer</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</body>

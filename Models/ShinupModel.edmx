@@ -1,0 +1,411 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="ShinUpModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Adresse">
+          <Key>
+            <PropertyRef Name="IdAdresse" />
+          </Key>
+          <Property Name="IdAdresse" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NomAdresse" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Numero" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Rue" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="CodePostal" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Ville" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AdresseClient">
+          <Key>
+            <PropertyRef Name="IdClient" />
+            <PropertyRef Name="IdAdresse" />
+          </Key>
+          <Property Name="IdClient" Type="int" Nullable="false" />
+          <Property Name="IdAdresse" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Client">
+          <Key>
+            <PropertyRef Name="IdClient" />
+          </Key>
+          <Property Name="IdClient" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nom" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Prenom" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Login" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Password" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Telephone" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Prestation">
+          <Key>
+            <PropertyRef Name="IdPrestation" />
+          </Key>
+          <Property Name="IdPrestation" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NomPrestation" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="PhotoPrestation" Type="nvarchar" MaxLength="50" />
+          <Property Name="IdTypePrestation" Type="int" Nullable="false" />
+          <Property Name="DescriptionPrestation" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="PrixDeBasePrestation" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="EtatPrestation" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Reservation">
+          <Key>
+            <PropertyRef Name="IdReservation" />
+          </Key>
+          <Property Name="IdReservation" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdClient" Type="int" Nullable="false" />
+          <Property Name="IdPrestation" Type="int" Nullable="false" />
+          <Property Name="DateReservation" Type="datetime" Nullable="false" />
+          <Property Name="PrixTotal" Type="decimal" Precision="10" Scale="2" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="TypePrestation">
+          <Key>
+            <PropertyRef Name="IdTypePrestation" />
+          </Key>
+          <Property Name="IdTypePrestation" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TypePrestation" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_AdresseClient_Adresse">
+          <End Role="Adresse" Type="Self.Adresse" Multiplicity="1" />
+          <End Role="AdresseClient" Type="Self.AdresseClient" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Adresse">
+              <PropertyRef Name="IdAdresse" />
+            </Principal>
+            <Dependent Role="AdresseClient">
+              <PropertyRef Name="IdAdresse" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AdresseClient_Client">
+          <End Role="Client" Type="Self.Client" Multiplicity="1" />
+          <End Role="AdresseClient" Type="Self.AdresseClient" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Client">
+              <PropertyRef Name="IdClient" />
+            </Principal>
+            <Dependent Role="AdresseClient">
+              <PropertyRef Name="IdClient" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Prestation_TypePrestation">
+          <End Role="TypePrestation" Type="Self.TypePrestation" Multiplicity="1" />
+          <End Role="Prestation" Type="Self.Prestation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TypePrestation">
+              <PropertyRef Name="IdTypePrestation" />
+            </Principal>
+            <Dependent Role="Prestation">
+              <PropertyRef Name="IdTypePrestation" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Reservation_Client">
+          <End Role="Client" Type="Self.Client" Multiplicity="1" />
+          <End Role="Reservation" Type="Self.Reservation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Client">
+              <PropertyRef Name="IdClient" />
+            </Principal>
+            <Dependent Role="Reservation">
+              <PropertyRef Name="IdClient" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Reservation_Prestation">
+          <End Role="Prestation" Type="Self.Prestation" Multiplicity="1" />
+          <End Role="Reservation" Type="Self.Reservation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Prestation">
+              <PropertyRef Name="IdPrestation" />
+            </Principal>
+            <Dependent Role="Reservation">
+              <PropertyRef Name="IdPrestation" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ShinUpModelStoreContainer">
+          <EntitySet Name="Adresse" EntityType="Self.Adresse" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AdresseClient" EntityType="Self.AdresseClient" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Client" EntityType="Self.Client" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Prestation" EntityType="Self.Prestation" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Reservation" EntityType="Self.Reservation" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TypePrestation" EntityType="Self.TypePrestation" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_AdresseClient_Adresse" Association="Self.FK_AdresseClient_Adresse">
+            <End Role="Adresse" EntitySet="Adresse" />
+            <End Role="AdresseClient" EntitySet="AdresseClient" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AdresseClient_Client" Association="Self.FK_AdresseClient_Client">
+            <End Role="Client" EntitySet="Client" />
+            <End Role="AdresseClient" EntitySet="AdresseClient" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Prestation_TypePrestation" Association="Self.FK_Prestation_TypePrestation">
+            <End Role="TypePrestation" EntitySet="TypePrestation" />
+            <End Role="Prestation" EntitySet="Prestation" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Reservation_Client" Association="Self.FK_Reservation_Client">
+            <End Role="Client" EntitySet="Client" />
+            <End Role="Reservation" EntitySet="Reservation" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Reservation_Prestation" Association="Self.FK_Reservation_Prestation">
+            <End Role="Prestation" EntitySet="Prestation" />
+            <End Role="Reservation" EntitySet="Reservation" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ShinUpModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Adresse">
+          <Key>
+            <PropertyRef Name="IdAdresse" />
+          </Key>
+          <Property Name="IdAdresse" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NomAdresse" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Numero" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Rue" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CodePostal" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Ville" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Client" Relationship="Self.AdresseClient" FromRole="Adresse" ToRole="Client" />
+        </EntityType>
+        <EntityType Name="Client">
+          <Key>
+            <PropertyRef Name="IdClient" />
+          </Key>
+          <Property Name="IdClient" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nom" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Prenom" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Login" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Telephone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Reservation" Relationship="Self.FK_Reservation_Client" FromRole="Client" ToRole="Reservation" />
+          <NavigationProperty Name="Adresse" Relationship="Self.AdresseClient" FromRole="Client" ToRole="Adresse" />
+        </EntityType>
+        <EntityType Name="Prestation">
+          <Key>
+            <PropertyRef Name="IdPrestation" />
+          </Key>
+          <Property Name="IdPrestation" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NomPrestation" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PhotoPrestation" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IdTypePrestation" Type="Int32" Nullable="false" />
+          <Property Name="DescriptionPrestation" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PrixDeBasePrestation" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="EtatPrestation" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="TypePrestation" Relationship="Self.FK_Prestation_TypePrestation" FromRole="Prestation" ToRole="TypePrestation" />
+          <NavigationProperty Name="Reservation" Relationship="Self.FK_Reservation_Prestation" FromRole="Prestation" ToRole="Reservation" />
+        </EntityType>
+        <EntityType Name="Reservation">
+          <Key>
+            <PropertyRef Name="IdReservation" />
+          </Key>
+          <Property Name="IdReservation" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdClient" Type="Int32" Nullable="false" />
+          <Property Name="IdPrestation" Type="Int32" Nullable="false" />
+          <Property Name="DateReservation" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="PrixTotal" Type="Decimal" Precision="10" Scale="2" Nullable="false" />
+          <NavigationProperty Name="Client" Relationship="Self.FK_Reservation_Client" FromRole="Reservation" ToRole="Client" />
+          <NavigationProperty Name="Prestation" Relationship="Self.FK_Reservation_Prestation" FromRole="Reservation" ToRole="Prestation" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="TypePrestation">
+          <Key>
+            <PropertyRef Name="IdTypePrestation" />
+          </Key>
+          <Property Name="IdTypePrestation" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TypePrestation1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Prestation" Relationship="Self.FK_Prestation_TypePrestation" FromRole="TypePrestation" ToRole="Prestation" />
+        </EntityType>
+        <Association Name="FK_Reservation_Client">
+          <End Role="Client" Type="Self.Client" Multiplicity="1" />
+          <End Role="Reservation" Type="Self.Reservation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Client">
+              <PropertyRef Name="IdClient" />
+            </Principal>
+            <Dependent Role="Reservation">
+              <PropertyRef Name="IdClient" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Prestation_TypePrestation">
+          <End Role="TypePrestation" Type="Self.TypePrestation" Multiplicity="1" />
+          <End Role="Prestation" Type="Self.Prestation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TypePrestation">
+              <PropertyRef Name="IdTypePrestation" />
+            </Principal>
+            <Dependent Role="Prestation">
+              <PropertyRef Name="IdTypePrestation" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Reservation_Prestation">
+          <End Role="Prestation" Type="Self.Prestation" Multiplicity="1" />
+          <End Role="Reservation" Type="Self.Reservation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Prestation">
+              <PropertyRef Name="IdPrestation" />
+            </Principal>
+            <Dependent Role="Reservation">
+              <PropertyRef Name="IdPrestation" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="AdresseClient">
+          <End Role="Adresse" Type="Self.Adresse" Multiplicity="*" />
+          <End Role="Client" Type="Self.Client" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="ShinUpEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Adresse" EntityType="Self.Adresse" />
+          <EntitySet Name="Client" EntityType="Self.Client" />
+          <EntitySet Name="Prestation" EntityType="Self.Prestation" />
+          <EntitySet Name="Reservation" EntityType="Self.Reservation" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <EntitySet Name="TypePrestation" EntityType="Self.TypePrestation" />
+          <AssociationSet Name="FK_Reservation_Client" Association="Self.FK_Reservation_Client">
+            <End Role="Client" EntitySet="Client" />
+            <End Role="Reservation" EntitySet="Reservation" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Prestation_TypePrestation" Association="Self.FK_Prestation_TypePrestation">
+            <End Role="TypePrestation" EntitySet="TypePrestation" />
+            <End Role="Prestation" EntitySet="Prestation" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Reservation_Prestation" Association="Self.FK_Reservation_Prestation">
+            <End Role="Prestation" EntitySet="Prestation" />
+            <End Role="Reservation" EntitySet="Reservation" />
+          </AssociationSet>
+          <AssociationSet Name="AdresseClient" Association="Self.AdresseClient">
+            <End Role="Adresse" EntitySet="Adresse" />
+            <End Role="Client" EntitySet="Client" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ShinUpModelStoreContainer" CdmEntityContainer="ShinUpEntities">
+          <EntitySetMapping Name="Adresse">
+            <EntityTypeMapping TypeName="ShinUpModel.Adresse">
+              <MappingFragment StoreEntitySet="Adresse">
+                <ScalarProperty Name="IdAdresse" ColumnName="IdAdresse" />
+                <ScalarProperty Name="NomAdresse" ColumnName="NomAdresse" />
+                <ScalarProperty Name="Numero" ColumnName="Numero" />
+                <ScalarProperty Name="Rue" ColumnName="Rue" />
+                <ScalarProperty Name="CodePostal" ColumnName="CodePostal" />
+                <ScalarProperty Name="Ville" ColumnName="Ville" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Client">
+            <EntityTypeMapping TypeName="ShinUpModel.Client">
+              <MappingFragment StoreEntitySet="Client">
+                <ScalarProperty Name="IdClient" ColumnName="IdClient" />
+                <ScalarProperty Name="Nom" ColumnName="Nom" />
+                <ScalarProperty Name="Prenom" ColumnName="Prenom" />
+                <ScalarProperty Name="Login" ColumnName="Login" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Telephone" ColumnName="Telephone" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Prestation">
+            <EntityTypeMapping TypeName="ShinUpModel.Prestation">
+              <MappingFragment StoreEntitySet="Prestation">
+                <ScalarProperty Name="IdPrestation" ColumnName="IdPrestation" />
+                <ScalarProperty Name="NomPrestation" ColumnName="NomPrestation" />
+                <ScalarProperty Name="PhotoPrestation" ColumnName="PhotoPrestation" />
+                <ScalarProperty Name="IdTypePrestation" ColumnName="IdTypePrestation" />
+                <ScalarProperty Name="DescriptionPrestation" ColumnName="DescriptionPrestation" />
+                <ScalarProperty Name="PrixDeBasePrestation" ColumnName="PrixDeBasePrestation" />
+                <ScalarProperty Name="EtatPrestation" ColumnName="EtatPrestation" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Reservation">
+            <EntityTypeMapping TypeName="ShinUpModel.Reservation">
+              <MappingFragment StoreEntitySet="Reservation">
+                <ScalarProperty Name="IdReservation" ColumnName="IdReservation" />
+                <ScalarProperty Name="IdClient" ColumnName="IdClient" />
+                <ScalarProperty Name="IdPrestation" ColumnName="IdPrestation" />
+                <ScalarProperty Name="DateReservation" ColumnName="DateReservation" />
+                <ScalarProperty Name="PrixTotal" ColumnName="PrixTotal" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="ShinUpModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TypePrestation">
+            <EntityTypeMapping TypeName="ShinUpModel.TypePrestation">
+              <MappingFragment StoreEntitySet="TypePrestation">
+                <ScalarProperty Name="IdTypePrestation" ColumnName="IdTypePrestation" />
+                <ScalarProperty Name="TypePrestation1" ColumnName="TypePrestation" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="AdresseClient" TypeName="ShinUpModel.AdresseClient" StoreEntitySet="AdresseClient">
+            <EndProperty Name="Adresse">
+              <ScalarProperty Name="IdAdresse" ColumnName="IdAdresse" />
+            </EndProperty>
+            <EndProperty Name="Client">
+              <ScalarProperty Name="IdClient" ColumnName="IdClient" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Aucun" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
